@@ -1,5 +1,6 @@
 import pandas as pd
 import dateutil.parser
+import numpy as np
 
 ##### script to find interval between contacts regarding ReTiMo and relevant ground stations from FreeFlyer output data #####
 
@@ -21,7 +22,7 @@ h = df['col8']
 
 for i in range (a.size):
 
-    s = "{} 0{} {} {}".format(a.iloc[i], b.iloc[i], c.iloc[i], d.iloc[i]) #read GMAT epoch text as string
+    s = "{} 0{} {} {}".format(a.iloc[i], b.iloc[i], c.iloc[i], d.iloc[i]) #read FreeFlyer epoch text as string
     s = dateutil.parser.parse(s) #optional : convert to datetime object
     timestamp1.append(s)
 
@@ -32,9 +33,17 @@ for i in range (a.size):
 print(timestamp1[0])
 print(timestamp2[0])
 
-for i in range (1,len(timestamp1)):
-    if timestamp1[i]>timestamp2[i-1]:
-        gap.append(timestamp1[i] - timestamp2[i-1])
+final = np.column_stack((timestamp1,timestamp2))
+
+final = final[np.argsort(final[:, 0])]
+
+df = pd.DataFrame(final)
+df.to_csv('FF_ContactTimes_sorted.txt', index=False, header = None)
+
+print(final)
+for i in range (1,len(final)):
+    if final[i][0]>final[i-1][1]:
+        gap.append(final[i][0] - final[i-1][1])
 print (gap[0])
 
 gap.sort()
