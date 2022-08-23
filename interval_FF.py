@@ -2,7 +2,7 @@ import pandas as pd
 import dateutil.parser
 import numpy as np
 
-##### script to find interval between contacts regarding ReTiMo and relevant ground stations from FreeFlyer output data #####
+##### script to find interval between contacts regardinga satellite and relevant ground stations from FreeFlyer output data #####
 
 df = pd.read_csv("FF_ContactTimes.txt", usecols=[3, 4, 5, 6,7,8,9,10], names=['col1', 'col2', 'col3', 'col4','col5','col6','col7','col8'],delim_whitespace=True)  # read exported FreeFlyer epoch text, specify columns picked from .txt, no headers
 
@@ -26,7 +26,7 @@ for i in range (a.size):
     s = dateutil.parser.parse(s) #optional : convert to datetime object
     timestamp1.append(s)
 
-    x = "{} 0{} {} {}".format(e.iloc[i], f.iloc[i], g.iloc[i], h.iloc[i])  # read GMAT epoch text as string
+    x = "{} 0{} {} {}".format(e.iloc[i], f.iloc[i], g.iloc[i], h.iloc[i])  # read FreeFlyer epoch text as string
     x = dateutil.parser.parse(x)  # optional : convert to datetime object
     timestamp2.append(x)
 
